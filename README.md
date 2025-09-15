@@ -18,7 +18,6 @@ Demostrar habilidades técnicas en React/Next.js, TypeScript, gestión de estado
 - [Estructura del Proyecto](#️-estructura-del-proyecto)
 - [APIs Utilizadas](#-apis-utilizadas)
 - [Comandos Disponibles](#-comandos-disponibles)
-- [Contribución](#-contribución)
 
 ## ✨ Características Principales
 
@@ -505,8 +504,7 @@ GET /search.json?q=harry+potter+author:rowling+first_publish_year:1997
 ### Variables de Entorno de Producción
 ```bash
 # .env.production
-NEXT_PUBLIC_REQRES_API_KEY=tu_api_key_produccion
-NODE_ENV=production
+NEXT_PUBLIC_REQRES_API_KEY=reqres-free-v1
 ```
 
 ## 🚀 Comandos Disponibles
@@ -527,13 +525,6 @@ rm -rf node_modules  # Limpiar dependencias
 npm install          # Reinstalar dependencias
 ```
 
-
-### 🔧 Variables de Entorno de Producción
-```bash
-# .env.production
-NEXT_PUBLIC_REQRES_API_KEY=tu_api_key_produccion
-
-```
 
 
 ## 🎯 Conclusiones de la Prueba Técnica
