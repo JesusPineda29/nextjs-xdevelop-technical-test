@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server';
 
-// Endpoint para limpiar el refresh token
+// Endpoint Cerrar sesión del usuario, Elimina el refresh token del navegador
+
 export async function POST() {
-  // Crear una respuesta exitosa
+  // Crear respuesta de éxito
   const response = NextResponse.json({ success: true });
   
-  // Limpiar el refresh token
+  // Eliminar el refresh token del navegador
   response.cookies.set('refreshToken', '', {
-    // tiempo de expiración de 0 segundos
-    maxAge: 0,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    maxAge: 0, // Eliminar ahora mismo
+    httpOnly: true, // Solo el servidor puede tocarlo (más seguro)
+    secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+    sameSite: 'lax', // Protege contra ataques maliciosos
     path: '/'
   });
 

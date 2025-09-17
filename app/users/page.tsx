@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useUsers } from '@/hooks/useApi';
 import UsersTable from '@/components/UsersTable';
 
+// Página de usuarios con paginación
 export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error } = useUsers(currentPage);

@@ -1,3 +1,10 @@
+/**
+ * Store de usuarios (localStorage)
+ * 
+ * - Marca usuarios como eliminados (soft delete)
+ * - Cambia roles de usuarios (admin/user/moderator)
+ * - Persiste cambios en localStorage
+ */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 

@@ -5,7 +5,8 @@ import { useBooks } from '@/hooks/useApi';
 import BooksList from '@/components/BooksList';
 import { Search } from 'lucide-react';
 
-// Página de libros
+// Página de libros con búsqueda y filtros
+
 export default function BooksPage() {
   const [query, setQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');

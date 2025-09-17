@@ -2,15 +2,14 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
 import { getClientCookie } from '@/lib/cookies';
 
+// Página de inicio, redirige a la página de usuarios si el token existe
 export default function Home() {
   const router = useRouter();
-  const { token } = useAuthStore();
 
   useEffect(() => {
-    // Check if token exists in cookie on mount 
+    // Verificar si el token existe en la cookie al montar el componente
     const cookieToken = getClientCookie('accessToken');
 
     if (cookieToken) {

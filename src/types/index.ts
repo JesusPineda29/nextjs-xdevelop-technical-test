@@ -1,3 +1,13 @@
+/**
+ * Tipos de datos para la aplicación
+ * 
+ * - User: Usuario con roles simulados
+ * - Post: Post con comentarios
+ * - Comment: Comentario de un post
+ * - Book: Libro con autores y año de publicación
+ */
+
+
 export interface User {
   id: number;
   email: string;

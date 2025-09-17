@@ -7,6 +7,7 @@ import PostCard from '@/components/PostCard';
 import Pagination from '@/components/Pagination';
 import { ArrowLeft, User } from 'lucide-react';
 
+// Página de posts por usuario con paginación
 export default function UserPostsPage() {
   const params = useParams();
   const router = useRouter();

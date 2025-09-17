@@ -1,21 +1,29 @@
+/**
+ * Middleware de autenticación
+ * 
+ * - Protege rutas que requieren autenticación
+ * - Redirige usuarios no autenticados al login
+ * - Evita que usuarios logueados accedan al login
+
+ */
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('accessToken')?.value;
   
-  // Definir rutas protegidas
+  // Rutas que requieren autenticación
   const protectedPaths = ['/users', '/posts', '/books'];
   const isProtectedPath = protectedPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   );
 
-  // Redirigir a login si se intenta acceder a una ruta protegida sin token
+  // Si intenta acceder a ruta protegida sin token, redirigir al login
   if (isProtectedPath && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Redirigir a users page si ya está logueado y se intenta acceder a login
+  // Si ya está logueado y va al login, redirigir a users
   if (request.nextUrl.pathname === '/login' && token) {
     return NextResponse.redirect(new URL('/users', request.url));
   }

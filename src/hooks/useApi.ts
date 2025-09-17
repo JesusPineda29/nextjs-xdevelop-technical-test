@@ -1,20 +1,27 @@
+/**
+ * Hooks para manejar datos de APIs
+ * 
+ * - Conecta los componentes con las APIs externas
+ * - Maneja caché automático de datos (TanStack Query)
+ * - Combina datos de API con datos locales (localStorage)
+ */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { User, Post, Comment, UsersResponse } from '@/types';
 import { reqresRequest, getPosts, getPostsByUser, getPostComments, searchBooks, createPost, updatePost, deletePost, BOOKS_PER_PAGE } from '@/config/api';
 import { usePostsLocalStore } from '@/store/postsLocalStore';
 import { usePostsStore } from '@/store/postsStore';
 
-// Hook para obtener los usuarios
+// Hook para obtener usuarios de la API ReqRes
 export const useUsers = (page: number = 1) => {
   return useQuery<UsersResponse>({
-    queryKey: ['users', page],
+    queryKey: ['users', page], // Clave única para el caché
     queryFn: async () => {
       return reqresRequest(`/users?page=${page}`);
     },
   });
 };
 
-// Hook para obtener los posts
+// Hook para obtener posts (combina API + datos locales)
 export const usePosts = (page: number = 1) => {
   return useQuery<Post[]>({
     queryKey: ['posts', page],
@@ -79,7 +86,7 @@ export const useComments = (postId: number) => {
 };
 
 
-// Hook para crear un post
+// Hook para crear un post (guarda en API + localStorage)
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
   const { addLocalPost } = usePostsLocalStore();
@@ -93,19 +100,16 @@ export const useCreatePost = () => {
         console.log('API create failed, using local storage');
       }
       
-      // Guardar localmente
-      console.log('useCreatePost - About to add local post:', post);
+      // Guardar localmente para que persista
       const newPost = addLocalPost({
         ...post,
       });
-      console.log('useCreatePost - Created local post:', newPost);
       
       return newPost;
     },
     onSuccess: () => {
-      // Invalidar todas las queries de posts para refrescar la lista
+      // Refrescar la lista de posts para mostrar el nuevo
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      // También invalidar la primera página específicamente para mostrar los posts locales
       queryClient.invalidateQueries({ queryKey: ['posts', 1] });
     },
   });
@@ -193,7 +197,7 @@ export const useDeletePost = () => {
   });
 };
 
-// Hook para obtener los libros
+// Hook para buscar libros en OpenLibrary
 export const useBooks = (query: string, page: number = 1, filters?: { author?: string; year?: number }) => {
   return useQuery({
     queryKey: ['books', query, page, filters],
@@ -204,18 +208,17 @@ export const useBooks = (query: string, page: number = 1, filters?: { author?: s
       
       let searchQuery = query;
       
-      // Añadir filtro de autor
+      // Añadir filtros de búsqueda
       if (filters?.author) {
         searchQuery += ` author:${encodeURIComponent(filters.author)}`;
       }
       
-      // Añadir filtro de año
       if (filters?.year) {
         searchQuery += ` first_publish_year:${filters.year}`;
       }
       
       return searchBooks(searchQuery, page, BOOKS_PER_PAGE);
     },
-    enabled: !!query,
+    enabled: !!query, // Solo buscar si hay query
   });
 };

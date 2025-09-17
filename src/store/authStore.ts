@@ -1,3 +1,15 @@
+/**
+ * Store de autenticación (Zustand)
+ * 
+ * - Maneja el login y logout de usuarios
+ * - Guarda tokens de acceso y refresh
+ * - Controla roles (admin/user)
+ * - Persiste datos en localStorage y cookies
+ * 
+ * - Centraliza toda la lógica de autenticación
+ * - Mantiene la sesión del usuario activa
+ * - Limpia datos cuando el usuario hace logout
+ */
 import { create } from 'zustand';
 import { User } from '@/types';
 import { reqresRequest, reqresLoginRequest } from '@/config/api';
@@ -7,7 +19,7 @@ import { usePostsStore } from './postsStore';
 import { usePostsLocalStore } from './postsLocalStore';
 import { useUsersStore } from './usersStore';
 
-// Usuarios válidos guardados en el store
+// Usuarios válidos para la demo (en producción vendrían de una BD)
 const VALID_USERS = [
   { email: 'admin@admin.com', password: 'admin123', role: 'admin' as const, name: 'Admin User' },
   { email: 'user@user.com', password: 'user123', role: 'user' as const, name: 'Usuario User' }

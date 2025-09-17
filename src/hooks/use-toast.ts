@@ -1,5 +1,11 @@
 'use client';
 
+/**
+ * Hook para mostrar notificaciones (toasts)
+ * 
+ * - Muestra mensajes temporales al usuario (éxito, error, info, advertencia)
+ * - Usa la librería Sonner para las notificaciones
+ */
 import { toast as sonnerToast } from 'sonner';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -8,7 +14,7 @@ interface ToastOptions {
   type?: ToastType;
 }
 
-// Función helper para mostrar toast
+// Función para mostrar diferentes tipos de notificaciones
 const showToast = (message: string, options?: ToastOptions) => {
   const { type = 'info' } = options || {};
   
@@ -24,7 +30,7 @@ const showToast = (message: string, options?: ToastOptions) => {
   }
 };
 
-// Hook simple que envuelve sonner
+// Hook que devuelve funciones para manejar notificaciones
 export const useToast = () => {
   return {
     toast: showToast,
@@ -38,5 +44,5 @@ export const useToast = () => {
   };
 };
 
-// Función directa para usar sin hook
+// Función directa para usar sin hook (más simple)
 export const toast = showToast;

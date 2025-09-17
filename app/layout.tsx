@@ -9,6 +9,7 @@ import { Toaster } from 'sonner';
 import { useState } from 'react';
 import { Footer } from '@/components/Footer';
 
+// Layout principal con providers
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({

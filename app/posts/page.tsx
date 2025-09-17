@@ -10,6 +10,7 @@ import FavoritesModal from '@/components/FavoritesModal';
 import { toast } from 'sonner';
 import { Heart, Plus } from 'lucide-react';
 
+// Página de posts con paginación y creación de posts
 export default function PostsPage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
@@ -22,10 +23,7 @@ export default function PostsPage() {
   const { favorites } = usePostsStore();
   const createPostMutation = useCreatePost();
 
-  console.log('Posts data:', posts);
-  console.log('Current page:', currentPage);
-  console.log('Total pages:', totalPages);
-  console.log('Create mutation status:', createPostMutation.status);
+
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();

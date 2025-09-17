@@ -1,3 +1,11 @@
+/**
+ * Store de favoritos (IndexedDB)
+ * 
+ * - Guarda posts favoritos del usuario en IndexedDB
+ * - Permite agregar y quitar favoritos
+ * - Persiste datos entre sesiones
+ * 
+ */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 

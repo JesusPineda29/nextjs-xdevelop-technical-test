@@ -1,4 +1,14 @@
-// Configuración de las APIs
+/**
+ * Configuración centralizada de APIs
+ * 
+ * Este archivo maneja todas las conexiones con APIs externas:
+ * - ReqRes: Para autenticación y usuarios
+ * - OpenLibrary: Para buscar libros y autores
+ * - JSONPlaceholder: Para posts y comentarios
+ * 
+ * Cada API tiene sus propias funciones helper que manejan
+ * headers, errores y transformación de datos de forma consistente.
+ */
 import { apiRequest } from '@/lib/api-interceptor';
 
 // Número de libros por página
@@ -8,7 +18,7 @@ export const API_CONFIG = {
   // Configuración de las APIs
   // ReqRes API
   REQRES_BASE_URL: 'https://reqres.in/api',
-  REQRES_API_KEY: process.env.NEXT_PUBLIC_REQRES_API_KEY || 'demo-key',
+  REQRES_API_KEY: process.env.NEXT_PUBLIC_REQRES_API_KEY || 'fallback-key',
   
   // OpenLibrary API
   OPENLIBRARY_BASE_URL: 'https://openlibrary.org',

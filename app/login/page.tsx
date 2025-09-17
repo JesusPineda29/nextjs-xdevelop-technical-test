@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { toast } from 'sonner';
 
+// Página de login con formulario de inicio de sesión
 export default function LoginPage() {
   const [email, setEmail] = useState('admin@admin.com');
   const [password, setPassword] = useState('admin123');

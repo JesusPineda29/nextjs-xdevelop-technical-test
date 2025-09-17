@@ -1,3 +1,13 @@
+/**
+ * Store de posts locales (localStorage)
+ * 
+ * - Guarda posts creados por el usuario en localStorage
+ * - Marca posts eliminados (soft delete)
+ * - Genera IDs únicos para nuevos posts
+ * 
+ * - Los posts creados persisten aunque se recargue la página
+ * - Permite "eliminar" posts de la API sin afectar otros usuarios
+ */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Post } from '@/types';
