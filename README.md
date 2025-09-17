@@ -2,32 +2,37 @@
 
 ## 📋 Descripción del Proyecto
 
-Una aplicación web moderna y completamente funcional construida con **Next.js 15** que demuestra competencias avanzadas en desarrollo frontend, incluyendo autenticación segura, gestión de estado compleja, integración con múltiples APIs externas, y arquitectura escalable.
+Una aplicación web moderna y completamente funcional construida con **Next.js 15** que demuestra competencias avanzadas en desarrollo frontend, incluyendo autenticación simulada con tokens, gestión de estado compleja con múltiples stores, integración con tres APIs externas diferentes, y arquitectura escalable con componentes reutilizables.
 
 ### 🎯 Objetivo
-Demostrar habilidades técnicas en React/Next.js, TypeScript, gestión de estado, integración de APIs, y desarrollo de interfaces de usuario modernas y responsivas.
+Demostrar habilidades técnicas en React/Next.js, TypeScript, gestión de estado con Zustand, integración de APIs con TanStack Query, y desarrollo de interfaces de usuario modernas y responsivas con Tailwind CSS.
 
 ## 📋 Tabla de Contenidos
 
 - [Características Principales](#-características-principales)
 - [Stack Tecnológico](#️-stack-tecnológico)
 - [Instalación y Configuración](#-instalación-y-configuración)
+- [Competencias Técnicas Demostradas](#-competencias-técnicas-demostradas)
 - [Credenciales de Acceso](#-credenciales-de-acceso)
 - [Funcionalidades Detalladas](#-funcionalidades-detalladas)
 - [Arquitectura y Justificación Técnica](#-arquitectura-y-justificación-técnica)
 - [Estructura del Proyecto](#️-estructura-del-proyecto)
 - [APIs Utilizadas](#-apis-utilizadas)
 - [Comandos Disponibles](#-comandos-disponibles)
+- [Decisiones Arquitectónicas Fundamentales](#️-decisiones-arquitectónicas-fundamentales)
+- [Conclusiones de la Prueba Técnica](#️-conclusiones-de-la-prueba-técnica)
+
 
 ## ✨ Características Principales
 
-### 🔐 Sistema de Autenticación Avanzado
-- **Autenticación segura** con tokens simulados
+### 🔐 Sistema de Autenticación Simulado
+- **Autenticación simulada** con usuarios predefinidos (admin@admin.com, user@user.com)
+- **Tokens simulados** con expiración de 1 hora en cookies accesibles por JS
+- **Refresh tokens** en cookies HttpOnly para renovación automática
 - **Roles diferenciados** (Admin/Usuario) con permisos específicos
-- **Refresh tokens** en cookies HttpOnly, Secure, SameSite=Lax
-- **Middleware de protección** de rutas automático
-- **Persistencia de sesión** con localStorage
-- **Logout completo** que limpia todos los datos
+- **Middleware de protección** de rutas automático con Next.js
+- **Persistencia de sesión** con localStorage para datos de usuario
+- **Logout completo** que limpia todos los datos y stores
 
 ### 👥 Gestión Avanzada de Usuarios
 - **Tabla interactiva** con TanStack Table
@@ -40,22 +45,24 @@ Demostrar habilidades técnicas en React/Next.js, TypeScript, gestión de estado
 - **Navegación a posts** por usuario específico
 
 ### 📝 Sistema Completo de Posts
-- **Visualización de posts** desde JSONPlaceholder API
+- **Visualización de posts** desde JSONPlaceholder API con paginación
 - **Comentarios** que se cargan al expandir
 - **Sistema de favoritos** persistente con IndexedDB
-- **Creación de posts** (solo administradores)
-- **Eliminación de posts** con confirmación
-- **Persistencia local** para posts creados/editados
+- **Creación de posts** (solo administradores) con IDs únicos generados
+- **Edición inline** de posts con actualizaciones optimistas
+- **Eliminación de posts** con confirmación y marcado como eliminado
+- **Persistencia local** para posts creados/editados en localStorage
 - **Modal de favoritos** para gestión centralizada
-- **Paginación** para mejor rendimiento
+- **Filtrado inteligente** que excluye posts eliminados
 
 ### 📚 Buscador Avanzado de Libros
-- **Búsqueda en tiempo real** en Open Library API
+- **Búsqueda en tiempo real** en Open Library API 
 - **Filtros avanzados** por autor y año de publicación
-- **Paginación de resultados** 
-- **Portadas de libros** cuando están disponibles
-- **Modal de detalles** con información completa
-- **Búsqueda combinada** con múltiples filtros
+- **Paginación de resultados** (15 libros por página)
+- **Portadas de libros** cuando están disponibles desde Open Library
+- **Modal de detalles** con información completa del libro
+- **Búsqueda combinada** con múltiples filtros simultáneos
+- **Estados de carga** y manejo de errores de API
 
 ### 🎨 Interfaz y Experiencia de Usuario
 - **Diseño responsive** optimizado para todos los dispositivos
@@ -120,6 +127,8 @@ Crea un archivo `.env.local` en la raíz del proyecto:
 # .env.local
 NEXT_PUBLIC_REQRES_API_KEY=reqres-free-v1
 ```
+
+**Importante:** Esta variable de entorno es **requerida** para que la aplicación funcione correctamente. Sin ella, la API de ReqRes no responderá adecuadamente.
 
 ### 4. Ejecutar en Desarrollo
 ```bash
@@ -209,13 +218,13 @@ npm run start
 ## 📋 Funcionalidades Detalladas
 
 ### 🔐 Sistema de Autenticación
-- ✅ **Login seguro** con validación de credenciales
+- ✅ **Login simulado** con usuarios predefinidos (admin@admin.com, user@user.com)
 - ✅ **Tokens simulados** almacenados en cookies
-- ✅ **Refresh de tokens** implementado pero no automático
-- ✅ **Roles diferenciados** (admin/usuario) con middleware
-- ✅ **Protección de rutas** con Next.js middleware
-- ✅ **Logout completo** que limpia todas las sesiones
-- ✅ **Persistencia de sesión** con localStorage
+- ✅ **Refresh de tokens** implementado con endpoint `/api/auth/refresh`
+- ✅ **Roles diferenciados** (admin/usuario) con validación en componentes
+- ✅ **Protección de rutas** con Next.js middleware (solo verifica tokens)
+- ✅ **Logout completo** que limpia cookies, localStorage y todos los stores
+- ✅ **Persistencia de sesión** con localStorage para datos de usuario
 
 ### 👥 Gestión de Usuarios
 - ✅ **Tabla interactiva** con TanStack Table
@@ -227,13 +236,14 @@ npm run start
 - ✅ **Navegación a posts** por usuario específico
 
 ### 📝 Sistema de Posts
-- ✅ **Visualización de posts** desde JSONPlaceholder
-- ✅ **Comentarios condicionales** que se cargan al expandir
+- ✅ **Visualización de posts** desde JSONPlaceholder con paginación (9 posts por página)
+- ✅ **Comentarios condicionales** que se cargan solo al expandir cada post
 - ✅ **Sistema de favoritos** persistente con IndexedDB
-- ✅ **Creación de posts** (solo administradores)
+- ✅ **Creación de posts** (solo administradores) con IDs únicos generados
 - ✅ **Edición inline** de posts con actualizaciones optimistas
+- ✅ **Eliminación simulada** con marcado como eliminado (no se borra realmente)
 - ✅ **Paginación** para mejor rendimiento
-- ✅ **Persistencia local** para posts creados/editados
+- ✅ **Persistencia local** para posts creados/editados en localStorage
 - ✅ **Modal de favoritos** para gestión centralizada
 
 ### 📚 Buscador de Libros
@@ -266,9 +276,10 @@ npm run start
 **Justificación:**
 - **Ligero** (2.9kb) comparado con Redux (47kb)
 - **API simple** sin boilerplate excesivo
-- **Persistencia integrada** con localStorage/IndexedDB
+- **Persistencia diferenciada** con localStorage para posts locales e IndexedDB para favoritos
 - **TypeScript nativo** sin configuración adicional
-- **DevTools** para debugging
+- **Limpieza automática** de datos específicos por usuario al logout
+- **Múltiples stores** especializados (auth, posts, users)
 
 #### **4. TanStack Query**
 **Justificación:**
@@ -290,9 +301,10 @@ npm run start
 ### Gestión de Estado
 
 #### **Estado Global (Zustand)**
-- **authStore**: Autenticación, roles y tokens
+- **authStore**: Autenticación, roles, tokens y usuarios predefinidos
 - **postsStore**: Favoritos persistentes en IndexedDB
-- **postsLocalStore**: Posts creados/editados localmente
+- **postsLocalStore**: Posts creados/editados localmente en localStorage
+- **usersStore**: Gestión de usuarios eliminados y cambios de rol
 
 #### **Estado del Servidor (TanStack Query)**
 - **Caché básico** de datos de APIs (staleTime: 0)
@@ -306,9 +318,11 @@ npm run start
 ### Seguridad
 
 #### **Autenticación Simulada**
-- **Access tokens simulados** en cookies con expiración corta (1 hora)
-- **Refresh tokens simulados** en cookies HttpOnly
-- **Middleware** que protege rutas automáticamente
+- **Usuarios predefinidos** (admin@admin.com, user@user.com) con roles específicos
+- **Access tokens simulados** en cookies accesibles por JS con expiración de 1 hora
+- **Refresh tokens simulados** en cookies HttpOnly para renovación automática
+- **Middleware** que protege rutas automáticamente verificando cookies
+- **API Routes** para manejo de refresh tokens y limpieza de sesiones
 
 #### **Validación de Roles**
 - **Middleware** verifica tokens en cada request
@@ -525,6 +539,173 @@ rm -rf node_modules  # Limpiar dependencias
 npm install          # Reinstalar dependencias
 ```
 
+## 🏗️ Decisiones Arquitectónicas Fundamentales
+
+### 🎯 **1. Arquitectura de Estado: Separación por Dominio**
+
+#### **Decisión: Múltiples Stores Zustand Especializados**
+```typescript
+// 4 stores independientes con responsabilidades específicas
+- authStore: Autenticación, tokens y roles
+- postsStore: Favoritos con IndexedDB
+- postsLocalStore: Posts creados/editados con localStorage  
+- usersStore: Gestión de usuarios eliminados y cambios de rol
+```
+
+**Justificación Técnica:**
+- **Principio de Responsabilidad Única**: Cada store maneja un dominio específico
+- **Evita acoplamiento**: Cambios en un store no afectan otros
+- **Facilita testing**: Cada store se puede probar independientemente
+- **Escalabilidad**: Fácil agregar nuevos stores sin refactorizar existentes
+
+**Implementación Real:**
+- `authStore`: Maneja login/logout, tokens, roles y limpieza de datos
+- `postsStore`: Persiste favoritos en IndexedDB (mayor capacidad)
+- `postsLocalStore`: Persiste posts locales en localStorage (simplicidad)
+- `usersStore`: Gestiona estado temporal de usuarios (eliminados, roles)
+
+### 🔄 **2. Gestión de Datos: Patrón Híbrido API + Local**
+
+#### **Decisión: Sincronización Inteligente entre APIs y Estado Local**
+```typescript
+// Lógica de combinación en usePosts hook
+const apiPosts = await getPosts(page, 9);
+const localPosts = getAllLocalPosts();
+const filteredApiPosts = apiPosts.filter(post => !isPostDeleted(post.id));
+return page === 1 ? [...localPosts, ...filteredApiPosts] : filteredApiPosts;
+```
+
+**Justificación Técnica:**
+- **Resilencia**: Si la API falla, los datos locales siguen funcionando
+- **UX optimizada**: Los posts creados aparecen inmediatamente en la primera página
+- **Simulación realista**: Los posts no se eliminan realmente de la API, se marcan como eliminados
+- **Consistencia**: El usuario ve una experiencia fluida sin errores de API
+
+**Implementación Real:**
+- **Posts de API**: Se filtran los eliminados localmente
+- **Posts locales**: Se agregan solo en la primera página
+- **IDs únicos**: Se generan para evitar conflictos con la API
+- **Persistencia**: Los cambios se mantienen entre sesiones
+
+### 🔐 **3. Autenticación: Simulación Completa con Seguridad**
+
+#### **Decisión: Sistema de Autenticación Simulado con Flujo Real**
+```typescript
+// Usuarios predefinidos con roles específicos
+const VALID_USERS = [
+  { email: 'admin@admin.com', password: 'admin123', role: 'admin' },
+  { email: 'user@user.com', password: 'user123', role: 'user' }
+];
+```
+
+**Justificación Técnica:**
+- **Demostración completa**: Muestra todos los aspectos de un sistema de auth real
+- **Sin dependencias externas**: No requiere backend real para funcionar
+- **Roles funcionales**: Los permisos realmente afectan la UI y funcionalidad
+- **Seguridad realista**: Cookies HttpOnly para refresh tokens, accesibles para access tokens
+
+**Implementación Real:**
+- **Tokens con expiración**: 1 hora para access tokens
+- **Refresh automático**: Endpoint `/api/auth/refresh` para renovar tokens
+- **Middleware de protección**: Verifica tokens en rutas protegidas
+- **Limpieza completa**: Al logout se limpian todos los stores y cookies
+
+### ⚡ **4. Rendimiento: Optimizaciones Estratégicas**
+
+#### **Decisión: Carga Condicional y Caché Básico**
+```typescript
+// TanStack Query con configuración específica
+const [queryClient] = useState(() => new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0, // Always refetch
+      retry: 1,
+    },
+  },
+}));
+```
+
+**Justificación Técnica:**
+- **staleTime: 0**: Asegura datos frescos de APIs de prueba
+- **Carga condicional**: Los comentarios solo se cargan al expandir posts
+- **Paginación**: Reduce la carga inicial de datos
+- **Invalidación manual**: Control preciso sobre cuándo refrescar datos
+
+**Implementación Real:**
+- **Comentarios lazy**: `useComments(showComments ? post.id : 0)`
+- **Paginación**: 9 posts por página, 15 libros por página
+- **Estados de carga**: Feedback visual durante las operaciones
+- **Optimistic updates**: Los cambios se muestran inmediatamente
+
+### 🌐 **5. Integración de APIs: Patrón de Abstracción**
+
+#### **Decisión: Configuración Centralizada y Interceptores**
+```typescript
+// API_CONFIG centraliza todas las configuraciones
+export const API_CONFIG = {
+  REQRES_BASE_URL: 'https://reqres.in/api',
+  OPENLIBRARY_BASE_URL: 'https://openlibrary.org',
+  JSONPLACEHOLDER_BASE_URL: 'https://jsonplaceholder.typicode.com',
+  // Headers, endpoints y configuración centralizada
+};
+```
+
+**Justificación Técnica:**
+- **Mantenibilidad**: Un solo lugar para cambiar URLs y configuraciones
+- **Consistencia**: Headers y configuración uniforme
+- **Flexibilidad**: Fácil agregar nuevas APIs
+- **Interceptores**: Manejo automático de refresh tokens
+
+**Implementación Real:**
+- **3 APIs diferentes**: ReqRes (usuarios), JSONPlaceholder (posts), Open Library (libros)
+- **Interceptores**: Manejo automático de tokens expirados
+- **Fallbacks**: Si la API falla, se usa estado local
+- **Configuración por entorno**: Variables de entorno para API keys
+
+### 🎨 **6. UI/UX: Patrones Consistentes**
+
+#### **Decisión: Sistema de Estados y Feedback Unificado**
+```typescript
+// Patrones consistentes en toda la aplicación
+- Loading states con TanStack Query
+- Error handling con try/catch
+- Toast notifications con Sonner
+- Modales de confirmación para acciones destructivas
+```
+
+**Justificación Técnica:**
+- **Consistencia**: Mismos patrones en toda la aplicación
+- **Accesibilidad**: Estados claros para todos los usuarios
+- **Prevención de errores**: Confirmaciones para acciones importantes
+- **Feedback inmediato**: El usuario siempre sabe qué está pasando
+
+**Implementación Real:**
+- **Estados de carga**: `isLoading`, `isPending` en mutaciones
+- **Manejo de errores**: Try/catch con toast notifications
+- **Confirmaciones**: Modales para eliminar posts/usuarios
+- **Validación**: Formularios con validación en tiempo real
+
+### 🔧 **7. Persistencia: Estrategia Diferenciada**
+
+#### **Decisión: Tecnologías de Almacenamiento Específicas por Tipo de Dato**
+```typescript
+// Persistencia diferenciada según el tipo de dato
+- IndexedDB: Para favoritos (mayor capacidad, mejor rendimiento)
+- localStorage: Para posts locales (simplicidad, datos temporales)
+- Cookies: Para tokens (seguridad, expiración automática)
+```
+
+**Justificación Técnica:**
+- **IndexedDB para favoritos**: Mayor capacidad, mejor para datos que pueden crecer
+- **localStorage para posts locales**: Simplicidad para datos temporales
+- **Cookies para tokens**: Seguridad con expiración automática
+- **Limpieza automática**: Al logout se limpian todos los datos específicos del usuario
+
+**Implementación Real:**
+- **Zustand persist**: Middleware que maneja la persistencia automáticamente
+- **Storage personalizado**: Función `createIndexedDBStorage()` para IndexedDB
+- **Limpieza por usuario**: `clearUserData()` en cada store
+- **Fallbacks**: Si IndexedDB falla, se usa localStorage
 
 
 ## 🎯 Conclusiones de la Prueba Técnica

@@ -71,16 +71,16 @@ export default function PostsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Posts</h1>
           <p className="text-gray-600 mt-1">Navegar y gestionar posts</p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3">
           <button
             onClick={() => setShowFavoritesModal(true)}
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-red-600 text-red-600 bg-white hover:bg-red-50 h-10 px-4"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-red-600 text-red-600 bg-white hover:bg-red-50 h-10 px-4"
           >
             <Heart className="w-4 h-4 mr-2 fill-red-600" />
             Favoritos ({favorites.length})
@@ -89,7 +89,7 @@ export default function PostsPage() {
           {role === 'admin' && (
             <button
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800 h-10 px-4"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800 h-10 px-4"
             >
               <Plus className="w-4 h-4 mr-2" />
               {showCreateForm ? 'Cancelar' : 'Crear Post'}

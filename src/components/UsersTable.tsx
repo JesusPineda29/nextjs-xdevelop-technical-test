@@ -103,7 +103,7 @@ export default function UsersTable({ users, currentPage, totalPages, onPageChang
         <img
           src={info.getValue()}
           alt="Foto de perfil"
-          className="w-24 h-24 rounded-full"
+          className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
         />
       ),
     }),
@@ -161,13 +161,14 @@ export default function UsersTable({ users, currentPage, totalPages, onPageChang
       id: 'actions',
       header: 'Acciones',
       cell: (info) => (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
           <button
             onClick={() => router.push(`/posts/user/${info.row.original.id}`)}
             className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             <FileText className="w-3 h-3" />
-            Ver Posts
+            <span className="hidden sm:inline">Ver Posts</span>
+            <span className="sm:hidden">Posts</span>
           </button>
           {isAdmin && (
             <button
@@ -176,7 +177,12 @@ export default function UsersTable({ users, currentPage, totalPages, onPageChang
               className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
             >
               <Trash2 className="w-3 h-3" />
-              {isUserDeleted(info.row.original.id) ? 'Eliminado' : 'Eliminar'}
+              <span className="hidden sm:inline">
+                {isUserDeleted(info.row.original.id) ? 'Eliminado' : 'Eliminar'}
+              </span>
+              <span className="sm:hidden">
+                {isUserDeleted(info.row.original.id) ? 'X' : 'Del'}
+              </span>
             </button>
           )}
         </div>
@@ -274,91 +280,97 @@ export default function UsersTable({ users, currentPage, totalPages, onPageChang
       </div>
 
       {/* Renderizar los filtros */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <input
           placeholder="Buscar usuarios..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-1 max-w-sm h-10 rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="flex-1 w-full sm:max-w-sm h-10 rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
-        <select
-          value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
-          className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm"
-        >
-          <option value="all">Todos los roles</option>
-          <option value="admin">Admin</option>
-          <option value="moderator">Moderador</option>
-          <option value="user">Usuario</option>
-        </select>
-        <div className="text-sm text-gray-600">
-          Página {currentPage} de {totalPages}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="flex-1 sm:flex-none h-10 rounded-md border border-gray-300 px-3 py-2 text-sm"
+          >
+            <option value="all">Todos los roles</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderador</option>
+            <option value="user">Usuario</option>
+          </select>
+          <div className="text-sm text-gray-600 whitespace-nowrap">
+            Página {currentPage} de {totalPages}
+          </div>
         </div>
       </div>
 
       {/* Renderizar las acciones masivas - Solo para admins */}
       {isAdmin && selectedUsers.size > 0 && (
-        <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 bg-blue-50 rounded-lg">
           <span className="text-sm text-blue-800">
             {selectedUsers.size} usuario(s) seleccionado(s)
           </span>
-          <button
-            onClick={handleBulkDelete}
-            className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Eliminar seleccionados
-          </button>
-          <select
-            onChange={(e) => {
-              if (e.target.value) {
-                handleBulkRoleChange(e.target.value as 'admin' | 'user' | 'moderator');
-                e.target.value = '';
-              }
-            }}
-            className="px-2 py-1 text-xs border border-gray-300 rounded"
-          >
-            <option value="">Cambiar rol a...</option>
-            <option value="admin">Admin</option>
-            <option value="moderator">Moderador</option>
-            <option value="user">Usuario</option>
-          </select>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+            <button
+              onClick={handleBulkDelete}
+              className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+            >
+              Eliminar seleccionados
+            </button>
+            <select
+              onChange={(e) => {
+                if (e.target.value) {
+                  handleBulkRoleChange(e.target.value as 'admin' | 'user' | 'moderator');
+                  e.target.value = '';
+                }
+              }}
+              className="px-2 py-1 text-xs border border-gray-300 rounded"
+            >
+              <option value="">Cambiar rol a...</option>
+              <option value="admin">Admin</option>
+              <option value="moderator">Moderador</option>
+              <option value="user">Usuario</option>
+            </select>
+          </div>
         </div>
       )}
 
       {/* Renderizar la tabla */}
       <div className="border rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-4 py-3 whitespace-nowrap text-sm">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[600px]">
+            <thead className="bg-gray-50">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-gray-50">
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-2 sm:px-4 py-3 whitespace-nowrap text-sm">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Renderizar el componente de paginación */}
